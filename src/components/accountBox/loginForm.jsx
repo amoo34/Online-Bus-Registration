@@ -10,6 +10,7 @@ import {
 import { Marginer } from "../marginer";
 import { AccountContext } from "./accountContext";
 import {Driver} from '../driver/Login';
+import {Driver1} from '../driver1/Login'
 import {Student} from '../student/Login';
 import {Parent} from '../parent/Login';
 
@@ -27,6 +28,9 @@ export function LoginForm(props) {
 
     }else if(loginState==="parent"){
       setSignUpComponent(<Parent/>)
+    }
+    else if(loginState==="driver1"){
+      setSignUpComponent(<Driver1/>)
     }
     else{
       setSignUpComponent(<Student/>)
@@ -56,6 +60,10 @@ export function LoginForm(props) {
 
           <div className="col-md-4 text-center">
             <button   style={{width:'70%'}} className="btn btn-outline-success" onClick={()=>setLoginState("student")}>Student CheckIn</button> 
+          </div>
+
+          <div className="col-md-4 text-center">
+            <button   style={{width:'70%'}} className="btn btn-outline-success" onClick={()=>setLoginState("driver1")}>Driver1 CheckIn</button> 
           </div>
         </div>
         </>
