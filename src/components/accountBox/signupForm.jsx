@@ -12,6 +12,8 @@ import { Marginer } from "../marginer";
 import { AccountContext } from "./accountContext";
 import DriverSignUp from "../driver"
 import {ParentSignUp} from '../parent'
+import DriverSignUp1 from '../driver1'
+
 export function SignupForm(props) {
   const { switchToSignin } = useContext(AccountContext);
   const [loginState,setLoginState]=useState(null)
@@ -24,6 +26,8 @@ export function SignupForm(props) {
 
     }else if(loginState==="parent"){
       setSignUpComponent(<ParentSignUp/>)
+    }else if(loginState==="driver1"){
+      setSignUpComponent(<DriverSignUp1/>)
     }
     else{
 
@@ -50,9 +54,9 @@ export function SignupForm(props) {
           <button  style={{width:'70%'}}  className="btn btn-outline-danger" onClick={()=>setLoginState("parent")}>Parental Control</button> 
         </div>
 
-        {/* <div className="col-md-4 text-center">
-          <button  className="btn btn-outline-success" onClick={()=>setLoginState("student")}>Student Registration</button> 
-        </div> */}
+        <div className="col-md-4 text-center">
+          <button  className="btn btn-outline-success" onClick={()=>setLoginState("driver1")}>Driver1 Registration</button> 
+        </div>
       </div>
       </>
     }
