@@ -26,6 +26,7 @@ export function Driver1(){
             API.post("driverLogin",data)
             .then((res)=>{
                 sessionStorage.setItem("email",email);
+                localStorage.setItem("id",res?.data?.user?._id)
                 toast.success(res.data.message);
                 window.location="/dashboard";
             })

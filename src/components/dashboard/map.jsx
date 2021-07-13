@@ -2,6 +2,7 @@ import {React,useState,useEffect} from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet';
 import {API} from '../config'
+import socketClient from 'socket.io-client'
 
 const iconBus = new L.Icon({
     iconUrl: 'https://static.thenounproject.com/png/1661272-200.png',
@@ -10,6 +11,7 @@ const iconBus = new L.Icon({
     className: 'leaflet-div-icon'
 });
 
+let socket = ""
 
 export default function MapDashboard(){
 
@@ -18,25 +20,44 @@ export default function MapDashboard(){
     const [long,setlong]=useState(null);
 
     useEffect(()=>{
-        setInterval(() => {
-            
+
+        socket = socketClient('http://127.0.0.1:3001',{
+            query: {
+                id: localStorage.getItem("id") || 123
+              }   
+        ,
+            reconnection: true,
+        });
+        socket.on("connection", () => {
+            console.log("ON-CONNECTION");
+          });
+        console.log(socket)
+    },[])
+
+    useEffect(()=>{
+            const tInterval = setInterval(()=>{
             navigator.geolocation.getCurrentPosition(function(position) {
                 setlat( position.coords.latitude);
                 setlong(position.coords.longitude);
                 let data={
-                    id:sessionStorage.getItem("busNumber"),
+                    id:localStorage.getItem("id"),
                     lat:position.coords.latitude,
                     long:position.coords.longitude,
                     startingPoint:sessionStorage.getItem("startingPoint"),
                     destination:sessionStorage.getItem("destination")
                 }
-                API.post("setBusLocation",data)
-                .then((res)=>console.log(res))
-                .catch((err)=>console.log(err));
-                console.log(position)
-            });
-            
-        }, 10000);
+            socket.emit("updatedLocation",data)
+            //     API.post("setBusLocation",data)
+            //     .then((res)=>console.log(res))
+            //     .catch((err)=>console.log(err));
+            //     console.log(position)
+            // 
+        });
+    },10000)
+
+    return ()=>{
+        clearInterval(tInterval)
+    }
         
     })
 
