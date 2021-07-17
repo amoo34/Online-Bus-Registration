@@ -13,7 +13,7 @@ import StudentTracker from "./components/dashboard/studentTracker";
 import ParentTracker from "./components/dashboard/parentTracker";
 import RegisterStudent from "./components/dashboard/RegisterStudent";
 import StudentList from './components/dashboard/StudentList'
-
+import ResetDriver from './components/driver1/resetPassword'
 
 
 const AppContainer = styled.div`
@@ -41,7 +41,11 @@ function App() {
           exact
           component={MapDashboard}
           />
-
+        <Route 
+        path="/reset/driver/:id"
+        exact
+        component={ResetDriver}
+        />
         <Route
           path="/parent"
           exact

@@ -5,7 +5,8 @@ import {API} from '../config'
 export function Driver1(){
     const [email,setEmail] =useState("");
     const [password,setPassword] =useState("");
-
+    const [forgetInterface,setForgetInterface] = useState(false)
+    const [forgetEmail,setForgetEmail] = useState("")
     const signInHandler=(e)=>{
         // alert()
         e.preventDefault();
@@ -37,12 +38,27 @@ export function Driver1(){
         }
     
     }
+
+    const forgetHandler = () =>{
+        API.post("driverReset",{
+            userEmail:forgetEmail
+        })
+            .then((res)=>{
+                toast.success("Please check your Email");
+            })
+            .catch((err)=>{
+                console.log(err)
+                // toast.warn(err.response.data.message)
+            })
+    }
     return(
         <>
         <ToastContainer />
 
         {/* <form method="post" action="#" onSubmit={(e)=>signInHandler(e)} > */}
             <div className="row">
+            {!forgetInterface ?
+            <>
             <div  class="offset-md-2 col-md-8 text-center">
 
                 <div className="col-md-12">
@@ -58,6 +74,21 @@ export function Driver1(){
                     <input className="btn btn-outline-primary" onClick={signInHandler} type="submit" name="submit" value="submit" />
                 </div>
             </div>    
+            
+            <button onClick={()=>setForgetInterface(true)} >Forget Password</button>
+            </>
+            :
+            <div  class="offset-md-2 col-md-8 text-center">
+
+                <div className="col-md-12">
+                    <h3 className="mb-1">Enter your Email</h3>
+                    <input type="email" name="email" className="form-control" onChange={(e)=>setForgetEmail(e.target.value)} value={forgetEmail}   placeholder="Driver email" />
+                    <div className="col-md-12 text-center mt-5">
+                    <input className="btn btn-outline-primary" onClick={forgetHandler} type="button" name="submit" value="submit" />
+                </div>
+                </div>
+            </div>
+            }
             </div>
           
         {/* </form> */}
